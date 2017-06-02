@@ -144,7 +144,7 @@ public final class GameController {
 
                     }
                 };
-
+                
                 this._gameClickColumnGrid[i][j] = new MouseAdapter() {
 
                     @Override
