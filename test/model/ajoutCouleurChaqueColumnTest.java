@@ -40,6 +40,7 @@
 package model;
 
 import static model.ChangeColorEffectTest.aGame;
+import static model.DisappearEffectTest.aGame;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -52,7 +53,7 @@ import static org.junit.Assert.*;
  * @author Thomas
  */
 public class ajoutCouleurChaqueColumnTest {
-    
+    static Game aGame;
     public ajoutCouleurChaqueColumnTest() {
     }
     
@@ -85,21 +86,25 @@ public class ajoutCouleurChaqueColumnTest {
         int width = aGame.getBoard().getWidth();
         int height = aGame.getBoard().getHeight();
         
-        int i = height-1;
-        int j = 0;
+        int j = height-1;
+        int i = 0;
+        
+        aGame.getBoard().getTileIJ(height-1, 0).setEffect(new AjoutCouleurChaqueColumn()); // on met l'effet AjoutCouleurColumn sur la première case
+        aGame.playMove(0); // puis on joue sur cette case
         
         boolean testReussi = true;
         
-        while (j < width) {
-            while (i > 0 && aGame.getBoard().getTileIJ(i, j).getStatus() != -1){
-                i--;
+        while (i < width) {
+            while (j > 0 && aGame.getBoard().getTileIJ(j, i).getStatus() != -1){ // on récupère la case vide juste au dessous de la case
+                j--;                                                             // la plus en hauteur
             }
-            if (aGame.getBoard().getTileIJ(i, j).getStatus() != couleur)
-                testReussi = false;
-            j++;
-            i = height-1;
+            
+            if (aGame.getBoard().getTileIJ(j+1, i).getStatus() != couleur) // on test si la case la plus en hauteur est de la hauteur
+                testReussi = false;                                        // est de la couleur du joueur
+            i++;
+            j = height-1;
         }
-        
-        assertEquals(true, testReussi);
+        assertTrue("Doit être d'effet AjoutCouleurChaqueColumn", aGame.getBoard().getTileIJ(height - 1, 0).getEffect() instanceof AjoutCouleurChaqueColumn);
+        assertTrue(testReussi);
     }
 }

@@ -47,22 +47,25 @@ public class AjoutCouleurChaqueColumn extends Effect{
     
     @Override
     public void playEffect(int line, int column, Game game) {
-        int couleur = game.getCurrentPlayer().getId();
+        int couleur = game.getCurrentPlayer().getId(); //couleur du joueur
         
-        int width = game.getBoard().getWidth();
-        int height = game.getBoard().getHeight();
+        int width = game.getBoard().getWidth(); // hauteur du tableau
+        int height = game.getBoard().getHeight(); // largeur du tableau
         
-        int i = height-1;
-        int j = 0;
+        int j = height-1; // 
+        int i = 0;
         
-        while (j < width) {
-            while (i > 0 && game.getBoard().getTileIJ(i, j).getStatus() != -1){
-                i--;
+        
+        while (i < width) {
+            while (j > 0 && game.getBoard().getTileIJ(j, i).getStatus() != -1){  // on récupère la case vide juste au dessous de la case
+                j--;                                                             // la plus en hauteur
+                j--;
             }
-            game.getBoard().getTileIJ(i, j).setStatus(couleur);
-            j++;
-            i = height-1;
+            game.getBoard().getTileIJ(j, i).setStatus(couleur);
+            i++;
+            j = height-1;
         }
         
+        game.getBoard().getTileIJ(line, column).setEffect(null); // on enleve l'effet
     }
 }
